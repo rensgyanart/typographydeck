@@ -113,10 +113,10 @@
       align-items: center;
     }
 
-    /* JENDELA BACKGROUND: GARIS TEPI MENYESUAIKAN RASIO POSTER/FEED SECARA DINAMIS */
+    /* JENDELA BACKGROUND: DINAMIS RASIO SESUAI FOTO */
     .slide-stage {
       width: 100%;
-      aspect-ratio: 4 / 5; /* Default awal 4:5, dinamis sesuai slide */
+      aspect-ratio: 4 / 5;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -128,7 +128,7 @@
       transition: aspect-ratio 0.25s ease;
     }
 
-    /* GAMBAR KARYA: MEMENUHI JENDELA SECARA PRESISI DENGAN ROUNDED CORNER */
+    /* GAMBAR KARYA */
     .slide-img {
       width: 100%;
       height: 100%;
@@ -138,35 +138,43 @@
       transition: opacity 0.2s ease;
     }
 
-    /* SLIDE CONTROLS */
+    /* SLIDE CONTROLS: ROUNDED CORNER HITAM BERGARIS TEPI PUTIH, OPACITY 30% -> 90% */
     .nav-arrow {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      width: 42px;
-      height: 42px;
-      background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(8px);
-      border: 1px solid var(--c-silver);
-      color: var(--c-white);
-      border-radius: 50%;
+      width: 36px;
+      height: 48px;
+      background: #000000;
+      border: 1.5px solid #ffffff;
+      border-radius: 8px;
+      color: #ffffff;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-size: 18px;
+      font-size: 22px;
       font-weight: 700;
-      transition: all 0.2s ease;
+      opacity: 0.3; /* Transparan 30% jika tidak diklik */
+      transition: opacity 0.2s ease, transform 0.15s ease;
       z-index: 10;
       user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      outline: none;
     }
-    .nav-arrow:hover {
-      background: var(--c-primary);
-      border-color: var(--c-white);
-      color: var(--c-white);
+
+    .nav-arrow:hover,
+    .nav-arrow:active,
+    .nav-arrow:focus {
+      opacity: 0.9; /* Transparan 90% saat diklik atau kursor di atasnya */
+      background: #000000;
+      border-color: #ffffff;
+      color: #ffffff;
+      transform: translateY(-50%) scale(1.04);
     }
-    .arrow-left { left: 10px; }
-    .arrow-right { right: 10px; }
+
+    .arrow-left { left: 8px; }
+    .arrow-right { right: 8px; }
 
     /* SLIDE PAGINATION & INFO */
     .slide-info-bar {
@@ -174,31 +182,38 @@
       margin-top: 14px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
     }
 
+    /* BARIS INDIKATOR DENGAN JARAK AMAN DI HP */
     .meta-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 16px; /* Jarak aman agar tidak mepet di HP */
+      width: 100%;
     }
 
     .slide-counter {
       font-family: var(--font-mono);
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 700;
       color: var(--c-white);
       background: rgba(60, 108, 156, 0.2);
-      padding: 3px 10px;
+      padding: 4px 10px;
       border-radius: 6px;
       border: 1px solid var(--c-primary);
       letter-spacing: 0.3px;
+      white-space: nowrap; /* Teks tidak terlipat */
+      flex-shrink: 0;
     }
 
     .slide-dots {
       display: flex;
       gap: 6px;
       align-items: center;
+      flex-shrink: 0;
+      margin-left: auto;
     }
 
     .dot {
@@ -224,28 +239,42 @@
       border: 1px solid var(--c-border);
       border-radius: 12px;
       padding: 12px 14px;
-      font-size: 12.5px;
-      line-height: 1.5;
-      color: var(--c-silver);
+    }
+
+    /* LAYOUT CAPTION: TEKS BAWAH SEJAJAR RATA KIRI DENGAN KATA "SLIDE" */
+    .caption-layout {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .caption-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--c-primary);
+      border-radius: 50%;
+      margin-top: 5px;
+      flex-shrink: 0;
+    }
+
+    .caption-text-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
     }
 
     .caption-title {
       font-weight: 800;
       color: var(--c-white);
       font-size: 13.5px;
-      margin-bottom: 4px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      line-height: 1.35;
     }
 
-    .caption-title::before {
-      content: "";
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      background: var(--c-primary);
-      border-radius: 50%;
+    .caption-body {
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--c-silver);
     }
 
     /* FOOTER */
@@ -255,7 +284,7 @@
       text-align: center;
       margin-top: 24px;
       font-family: var(--font-mono);
-      font-size: 10px;
+      font-size: 10.5px;
       color: var(--c-silver);
       line-height: 1.6;
     }
@@ -305,7 +334,7 @@
 
       <div class="slide-info-bar">
         <div class="meta-row">
-          <span class="slide-counter" id="slideCounter">SLIDE 1 DARI 4 • 4:5 (Poster Vertikal)</span>
+          <span class="slide-counter" id="slideCounter">SLIDE 1 DARI 4 • 4:5</span>
           <div class="slide-dots">
             <span class="dot active" onclick="goToSlide(0)"></span>
             <span class="dot" onclick="goToSlide(1)"></span>
@@ -315,8 +344,13 @@
         </div>
 
         <div class="slide-caption-card" id="captionCard">
-          <div class="caption-title" id="captionTitle">Slide 1: Headline Bold & Kontras Utama</div>
-          <div id="captionBody">Menggunakan perpaduan font berkarakter kuat untuk judul utama (Headline) yang langsung menangkap perhatian dalam 3 detik pertama.</div>
+          <div class="caption-layout">
+            <span class="caption-dot"></span>
+            <div class="caption-text-group">
+              <div class="caption-title" id="captionTitle">Slide 1: Headline Bold & Kontras Utama</div>
+              <div class="caption-body" id="captionBody">Menggunakan perpaduan font berkarakter kuat untuk judul utama (Headline) yang langsung menangkap perhatian dalam 3 detik pertama.</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -324,8 +358,8 @@
 
   <!-- FOOTER -->
   <footer class="showcase-footer">
-    <div>PENELITIAN TINDAKAN KELAS KOLABORATIF (PTKK) • PPG CALON GURU VOKASI DKV</div>
-    <div>FAKULTAS KEGURUAN DAN ILMU PENDIDIKAN • UNIVERSITAS SARJANAWIYATA TAMANSISWA</div>
+    <div>PTKK • PPG CALON GURU VOKASI DKV</div>
+    <div>FKIP • UNIVERSITAS SARJANAWIYATA TAMANSISWA</div>
     <div class="qr-source-pill">
       🔗 Ditautkan secara fisik melalui QR Code pada <strong>Kartu 06 (Formula Font Pairing)</strong>
     </div>
@@ -338,28 +372,28 @@
         title: 'Slide 1: Headline Bold & Kontras Utama',
         body: 'Menggunakan perpaduan font berkarakter kuat untuk judul utama (Headline) yang langsung menangkap perhatian dalam 3 detik pertama.',
         aspectRatio: '4 / 5',
-        ratioLabel: '4:5 (Poster Vertikal)'
+        ratioLabel: '4:5'
       },
       {
         src: 'images/slide_2.webp',
         title: 'Slide 2: Eksplorasi Hierarki & Body Text',
         body: 'Penerapan font Sans-Serif bersih pada teks pendukung untuk menjamin pesan informasi tetap terbaca jelas di layar smartphone.',
         aspectRatio: '4 / 5',
-        ratioLabel: '4:5 (Poster Vertikal)'
+        ratioLabel: '4:5'
       },
       {
         src: 'images/slide_3.webp',
         title: 'Slide 3: Format Feed Persegi (1:1 Rasio)',
         body: 'Komposisi seimbang tata letak teks persegi dengan pemanfaatan ruang kosong (whitespace) agar desain tidak terasa sesak.',
         aspectRatio: '1 / 1',
-        ratioLabel: '1:1 (Feed Persegi)'
+        ratioLabel: '1:1'
       },
       {
         src: 'images/slide_4.webp',
         title: 'Slide 4: Kontras Warna & Harmonisasi Akhir',
         body: 'Penyelarasan palet warna dengan warna teks kontras tinggi untuk memastikan keterbacaan optimal tanpa silau.',
         aspectRatio: '1 / 1',
-        ratioLabel: '1:1 (Feed Persegi)'
+        ratioLabel: '1:1'
       }
     ];
 
